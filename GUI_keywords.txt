@@ -806,7 +806,7 @@ Library           Common/Library/MyLibrary.py
     [Arguments]    ${username}    ${password}
     kill driver    chrome.exe
     kill driver    chromedriver.exe
-    open browser    http://manage-pre.xiaoyezi.com/#!/pandect/dashboard    gc
+    open browser    http://manage.xiaoyezi.com/#!/pandect/dashboard    gc
     wait until element is visible    xpath=//html/body/div/div/form/table/tbody/tr[1]/td[2]/input
     select window    title=Piano Classroom
     maximize browser window
