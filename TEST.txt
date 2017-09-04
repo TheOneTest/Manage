@@ -1,0 +1,12 @@
+*** Settings ***
+Library           AppiumLibrary
+Library           Common/Library/MyAppLibrary.py
+Library           Selenium2Library
+
+*** Test Cases ***
+TEST1
+    ${index}=    random num
+    LOG    ${index}
+
+TEST2
+    open browser    http://www.baidu.com    gc

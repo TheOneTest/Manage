@@ -1,0 +1,88 @@
+*** Settings ***
+Library           AppiumLibrary
+Library           Screenshot
+Library           Common/Library/MyAppLibrary.py
+
+*** Keywords ***
+启动程序
+    open application    http://localhost:4723/wd/hub    platformName=Android    platformVersion=21    deviceName=GN151    appPackage=com.theonepiano.smartpiano    appActivity=com.theonepiano.smartpiano.activity.SplashActivity
+    ...    unicodeKeyboard=True    resetKeyboard=True
+    set appium timeout    20
+
+关闭程序
+    close application
+
+曲谱搜索--随机进入曲谱主页
+    [Arguments]    ${index}
+    click element    xpath=//android.widget.ListView[@resource-id=\"com.theonepiano.smartpiano:id/list_view\"]/android.widget.LinearLayout[${index}]    #随机进入曲谱主页
+    wait until element is visible    id=com.theonepiano.smartpiano:id/pause_button    20    #等待曲谱页面加载完成
+    click element    id=com.theonepiano.smartpiano:id/pause_button    #点击播放按钮开始播放
+    sleep    20
+    #click element    id=com.theonepiano.smartpiano:id/pause_button    #点击播放按钮暂停播放
+    click element    id=com.theonepiano.smartpiano:id/collect    #将曲谱加入喜欢
+    wait until element is visible    id=com.theonepiano.smartpiano:id/cancel    #取消加入喜欢
+    click element    id=com.theonepiano.smartpiano:id/cancel
+    click element    id=com.theonepiano.smartpiano:id/pause_button    #点击播放按钮开始播放
+    click element    id=com.theonepiano.smartpiano:id/setting    #点击设置按钮
+    click element    id=com.theonepiano.smartpiano:id/keyboard_check_box    #开启小键盘
+    click element    id=com.theonepiano.smartpiano:id/follow_left_hand    #隐藏设置窗口
+    take screenshot
+    click element    id=com.theonepiano.smartpiano:id/setting    #点击设置按钮
+    click element    id=com.theonepiano.smartpiano:id/keyboard_check_box    #关闭小键盘
+    click element    id=com.theonepiano.smartpiano:id/follow_left_hand    #隐藏设置窗口
+    take screenshot
+    click element    id=com.theonepiano.smartpiano:id/pause_button    #点击播放按钮暂停播放
+    click element    id=com.theonepiano.smartpiano:id/back
+
+钢琴页面--开启小键盘
+    wait until element is visible    id=com.theonepiano.smartpiano:id/setting
+    click element    id=com.theonepiano.smartpiano:id/setting    #点击设置按钮
+    ${list_num}=    get matching xpath count    xpath=//android.widget.GridView[@resource-id=\"com.theonepiano.smartpiano:id/track_grid_view\"]/android.widget.LinearLayout
+    run keyword if    ${list_num}>2    click element    id=com.theonepiano.smartpiano:id/follow_left_hand
+    ...    ELSE    钢琴页面--小键盘    #隐藏设置窗口
+    take screenshot
+
+钢琴页面--小键盘
+    #click element    id=com.theonepiano.smartpiano:id/setting    #点击设置按钮
+    click element    id=com.theonepiano.smartpiano:id/keyboard_check_box    #开启小键盘
+    click element    id=com.theonepiano.smartpiano:id/follow_left_hand    #隐藏设置窗口
+    sleep    5
+    click element    id=com.theonepiano.smartpiano:id/setting    #点击设置按钮
+    click element    id=com.theonepiano.smartpiano:id/keyboard_check_box    #开启小键盘
+    click element    id=com.theonepiano.smartpiano:id/follow_left_hand    #隐藏设置窗口
+
+返回主界面
+    press keycode    4
+    click element    id=com.theonepiano.smartpiano:id/drawer_icon
+    click element    name=首页    #点击首页按钮
+    wait until element is visible    xpath=//android.widget.FrameLayout[@resource-id=\"com.theonepiano.smartpiano:id/btn_led\"]/android.widget.ImageView[1]
+    click element    xpath=//android.widget.FrameLayout[@resource-id=\"com.theonepiano.smartpiano:id/btn_led\"]/android.widget.ImageView[1]
+
+退出登录状态
+    click element    id=com.theonepiano.smartpiano:id/drawer_icon    #打开左侧导航
+    click element    id=com.theonepiano.smartpiano:id/account_view    #点击用户头像
+    click element    id=com.theonepiano.smartpiano:id/logout    #点击退出
+    page should contain text    立即登录    退出登录成功
+
+检查用户登录状态
+    ${username}=    get text    id=com.theonepiano.smartpiano:id/avatar_title
+    run keyword if    '${username}'!='登录后收藏琴谱,手机平板多端同步'    导航退出登录
+    ...    ELSE    click element    name=热门推荐
+
+导航退出登录
+    click element    id=com.theonepiano.smartpiano:id/account_view    #点击用户头像
+    click element    id=com.theonepiano.smartpiano:id/logout    #点击退出
+    page should contain text    立即登录    退出登录成功
+    press keycode    4
+
+输入邮箱文本
+    click a point    230    1220    100    #输入字符@
+    click a point    42    898    100    #输入字符Q
+    click a point    42    898    100    #输入字符Q
+    click a point    496    1221    100    #输入字符.
+    click a point    295    1118    100    #输入字符c
+    click a point    611    896    100    #输入字符o
+    click a point    576    1121    100    #输入字符m
+
+修改密码
+    input text

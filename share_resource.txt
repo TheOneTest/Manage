@@ -1,0 +1,12 @@
+*** Settings ***
+Library           collections
+Library           String
+Library           Selenium2Library
+Library           OperatingSystem
+Library           Screenshot
+Library           ExcelLibrary
+
+*** Keywords ***
+Common_Test_Setup
+
+Common_Test_Teardown

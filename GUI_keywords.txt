@@ -1,0 +1,818 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Common/Library/MyLibrary.py
+
+*** Variables ***
+@{usernam}        一    二    三    四    五    六    七
+...               八    九    十
+@{usernast}       a    b    c    d
+
+*** Keywords ***
+打开浏览器
+    [Arguments]    ${value}    ${tpyel}
+    open browser    ${value}    ${tpyel}
+    maximize browser window
+
+点击指定链接
+    [Arguments]    ${logn}
+    wait until element is visible    ${logn}    5
+    click Element    ${logn}
+    sleep    2
+
+登录
+    [Arguments]    ${username}    ${password}
+    kill driver    chrome.exe
+    kill driver    chromedriver.exe
+    open browser    http://manage-pre.xiaoyezi.com/#!/pandect/dashboard    gc
+    wait until element is visible    xpath=//html/body/div/div/form/table/tbody/tr[1]/td[2]/input
+    select window    title=Piano Classroom
+    maximize browser window
+    input text    xpath=//html/body/div/div/form/table/tbody/tr[1]/td[2]/input    ${username}
+    input text    xpath=//html/body/div/div/form/table/tbody/tr[2]/td[2]/input    ${password}
+    click element    xpath=//html/body/div/div/form/table/tbody/tr[3]/td[2]/input
+    sleep    1
+    set selenium speed    0.3
+    wait until element is visible    xpath=//html/body/header/div[2]/span    20
+
+等待元素出现
+    Wait Until Element Is Visible    id=username    3
+
+退出登陆状态
+    wait until element is visible    xpath=//a[text()='退出']    5
+    click element    xpath=//a[text()='退出']
+
+忘记密码
+    [Arguments]    ${username}
+    wait until element is visible    xpath=//a[text()='忘记密码?']
+    click element    xpath=//a[text()='忘记密码?']
+    sleep    2
+    select window    title=忘记密码_职坐标
+    Input Text    id=userName    ${username}
+    sleep    5
+    click button    id=link_button
+
+课程搜索
+    [Arguments]    ${search_text}
+    Input Text    id=search-h-t    ${search_text}
+    Click Button    id=search-h-b
+    wait until element is visible    xpath=//a[text()='全部']    5
+    click element    xpath=//a[text()='付费']
+    sleep    3
+    click element    xpath=//a[text()='免费']
+    sleep    2
+    mouse over    xpath=//a[text()='移动开发']
+    sleep    1
+    mouse over    xpath=//a[text()='IOS']
+    sleep    1
+    mouse over    xpath=//a[text()='后端开发']
+    mouse over    xpath=//a[text()='ASP.NET']
+    click element    xpath=//a[text()='ASP.NET']
+    sleep    3
+
+加入课表
+    click element    xpath=//div[@class='course_box clearfix']//dl[1]/dt[1]/a[1]
+    sleep    3
+    select window    title= iOS开发零基础-Objective-C语法基础_课程中心_职坐标
+    click element    id=joinCourse_input
+    click element    id=freeTry_a
+    sleep    3
+    select window    title=播放页-职坐标
+    sleep    3
+    close browser
+
+订单管理
+    wait until element is visible    id=my_order_li    10
+    click element    id=my_order_li
+    sleep    2
+    page should contain    未付款
+    click element    xpath=//tr[2]/td[5]//a[1]
+    sleep    1
+
+支付方式--支付宝
+    [Arguments]    ${username}    ${userpwd}
+    select window    title=课程支付_职坐标
+    sleep    1
+    click element    id=alipay_a
+    sleep    1
+    click element    id=confirm_pay_a
+    select window    title=支付宝 - 网上支付 安全快速！
+    sleep    2
+    Click Element    xpath=//div[@id='J_tip_qr']/a[1]
+    wait until element is visible    id=J_tLoginId    5
+    input text    id=J_tLoginId    ${username}
+    input text    id=payPasswd_rsainput    ${userpwd}
+    sleep    1
+    Click Element    id=J_newBtn
+    #    sleep    3
+    #    input text    id=payPassword_rsainput    32121212
+    #    sleep    2
+    #    Click Button    id=J_authSubmit
+
+支付方式--财付通
+    select window    title=课程支付_职坐标
+    sleep    1
+    click element    id=tenpay_a
+    sleep    1
+    click element    id=confirm_pay_a
+    sleep    1
+    select window    title=财付通 - 支付中心
+    select frame    id=quick_login_iframe
+    sleep    3
+    click element    xpath=//div[@id='qlogin_list']/a[1]
+
+订单管理--取消订单
+    wait until element is visible    id=my_order_li    10
+    click element    id=my_order_li
+    sleep    2
+    page should contain    未付款
+    click element    xpath=//tr[2]/td[5]//a[2]
+    sleep    1
+    wait until element is visible    id=public_pmp    5
+    click element    id=p_cancel_btn
+    sleep    1
+    click element    xpath=//tr[2]/td[5]//a[2]
+    sleep    1
+    wait until element is visible    id=public_pmp
+    click element    id=p_confirm_btn
+    sleep    1
+
+订单管理--订单查询
+    wait until element is visible    id=my_order_li    10
+    click element    id=my_order_li
+    wait until element is visible    id=order_status_li_-1    5
+    click element    id=order_status_li_-1
+    sleep    2
+    click element    id=order_status_li_0
+    sleep    2
+    click element    id=order_status_li_1
+    sleep    2
+    click element    id=order_status_li_2
+    sleep    2
+
+切换院系
+    点击指定链接    xpath=//a[text()='切换院系']    #点击切换院系
+    点击指定链接    xpath=//tbody[1]//tr[3]//td    #点击列表中第一个院系
+    点击指定链接    xpath=//a[text()='切换院系']    #点击切换院系
+    点击指定链接    xpath=//tbody[1]//tr[1]//td    #点击列表中第一个院系
+    点击指定链接    xpath=//a[text()='切换院系']    #点击切换院系
+    点击指定链接    xpath=//tbody[1]//tr[2]//td    #点击列表中第一个院系
+    sleep    1
+
+软件理论-课程配置
+    点击指定链接    xpath=//div[@class='c_lists']/dl[1]/dt/span[3]/a    #配置课程[1]
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[1]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[2]/a[text()='后端开发']    #点击后端开发
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[2]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[3]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[3]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[4]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[1]//label/input
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[2]//label/input
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[3]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[5]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[5]/li[1]//label/input
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[5]/li[2]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[6]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[6]/li[1]//label/input
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[6]/li[2]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[7]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[7]/li[1]//label/input
+    点击指定链接    id=bt_done
+
+软件测试-课程配置
+    点击指定链接    xpath=//div[@class='c_lists']/dl[2]/dt/span[3]/a    #配置课程[2]
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[1]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[1]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[2]/a[text()='后端开发']    #点击后端开发
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[2]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[3]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[3]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[4]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[1]//label/input
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[2]//label/input
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[3]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[5]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[5]/li[1]//label/input
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[5]/li[2]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[6]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[6]/li[1]//label/input
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[6]/li[2]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[7]/a
+    select checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[7]/li[1]//label/input
+    点击指定链接    id=bt_done
+
+播放课程
+    wait until element is visible    xpath=//div[@class='c_lists']/dl[1]/dd/ul/li[1]
+    点击指定链接    xpath=//div[@class='c_lists']/dl[1]/dd/ul/li[1]    #点击第一排第一个课程
+    sleep    2
+    select window    title=院校合作项目-播放页
+    close window
+    select window    title=课程管理
+    wait until element is visible    xpath=//div[@class='c_lists']/dl[2]/dd/ul/li[1]
+    点击指定链接    xpath=//div[@class='c_lists']/dl[2]/dd/ul/li[1]    #点击第二排第一个课程
+    sleep    2
+    select window    title=院校合作项目-播放页
+    close window
+    select window    title=课程管理
+    sleep    1
+
+创建学生
+    click image    xpath=//img[@alt='创建学生']
+    点击指定链接    id=edit_institute_select    #学院
+    click element    xpath=//select[@id='edit_institute_select']/option[1]    #学院
+    click element    id=edit_institute_select    #学院
+    点击指定链接    xpath=//select[@id='edit_institute_select']/option[2]    #学院
+    点击指定链接    id=edit_profession_select    #专业
+    click element    xpath=//select[@id='edit_profession_select']/option[1]    #专业
+    click element    id=edit_profession_select
+    点击指定链接    xpath=//select[@id='edit_profession_select']/option[2]
+    点击指定链接    id=edit_year_select    #入学时间
+    click element    xpath=//select[@id='edit_year_select']/option[1]    #入学时间
+    click element    id=edit_year_select
+    点击指定链接    xpath=//select[@id='edit_year_select']/option[2]
+    点击指定链接    id=edit_class_select
+    click element    xpath=//select[@id='edit_class_select']/option[1]
+    click element    id=edit_class_select    #点击选择班级
+    点击指定链接    xpath=//select[@id='edit_class_select']/option[2]    #选择班级
+    ${a}    evaluate    random.randint(1000,10000)    random
+    ${b}    evaluate    random.randint(1,10)    random
+    sleep    2
+    input text    id=edit_realName    测试何
+    input text    id=edit_studentCode    2016${a}
+    input text    id=edit_username    ceshi${a}
+    input text    id=edit_password    123456
+    click button    xpath=//input[@class='complete_bg']
+    wait until element is visible    id=p_confirm_btn    5
+    click button    id=p_confirm_btn
+    sleep    2
+
+导出到Excel
+
+关闭对话框
+    [Arguments]    ${title}    ${text}=
+    [Documentation]    关闭对话框
+    win wait    ${title}    ${text}    30
+    ${ret}=    control get text    ${EMPTY}    ${EMPTY}    Static2
+    \    log    ${ret}
+    \    control CLICK    ${EMPTY}    ${EMPTY}    Button1
+    \    comment    Win Close    ${title}
+    [Return]    ${ret}
+
+批量删除上传
+    点击指定链接    xpath=//a[text()='学生管理']    #点击学生管理
+    sleep    2
+    select checkbox    xpath=//tbody[@id='student_tbody']/tr[1]/td[1]/input
+    select checkbox    xpath=//tbody[@id='student_tbody']/tr[2]/td[1]/input
+    select checkbox    xpath=//tbody[@id='student_tbody']/tr[3]/td[1]/input
+    sleep    1
+    click image    xpath=//img[@alt='批量删除']
+    sleep    1
+    click button    id=p_confirm_btn    #取消删除:p_cancel_btn    确定：
+    reload page
+    sleep    2
+
+创建教师
+    click image    xpath=//img[@alt='创建教师']
+    点击指定链接    id=edit_institute_select    #学院
+    点击指定链接    xpath=//select[@id='edit_institute_select']/option[1]    #学院
+    点击指定链接    id=edit_institute_select    #学院
+    点击指定链接    xpath=//select[@id='edit_institute_select']/option[2]    #学院
+    select checkbox    professionId
+    ${c}    evaluate    random.randint(100,1000)    random
+    输入内容    teacherCode    1352141${c}
+    输入内容    teacherName    测师人员
+    输入内容    qqCode    137434${c}
+    输入内容    teacherTel    13152485414
+    输入内容    username    ceshijiaoshi${c}
+    输入内容    password    123456
+    click button    xpath=//input[@class='complete_bg']
+    sleep    1
+    click button    id=p_cancel_btn
+    sleep    1
+    click button    xpath=//input[@class='complete_bg']
+    sleep    1
+    click button    id=p_confirm_btn
+    sleep    2
+
+输入内容
+    [Arguments]    ${element_id}    ${element_value}
+    wait until element is visible    ${element_id}    5
+    input text    ${element_id}    ${element_value}
+    sleep    1
+
+编辑教师
+    点击指定链接    xpath=//tbody[@id='teacher_tbody']/tr[1]/td[5]/a[1]    #编辑教师信息
+    点击指定链接    id=edit_institute_select    #学院
+    点击指定链接    xpath=//select[@id='edit_institute_select']/option[1]    #学院
+    点击指定链接    id=edit_institute_select    #学院
+    点击指定链接    xpath=//select[@id='edit_institute_select']/option[2]    #学院
+    select checkbox    professionId
+    ${a}    evaluate    random.randint(100,1000)    random
+    sleep    2
+    输入内容    teacherCode    1352141${a}
+    输入内容    teacherName    李泽明
+    输入内容    qqCode    137434${a}
+    输入内容    teacherTel    13152485414
+    输入内容    username    ceshijiaoshi${a}
+    输入内容    password    123456
+    click button    xpath=//input[@class='complete_bg']
+    sleep    1
+    click button    id=p_cancel_btn
+    sleep    1
+    click button    xpath=//input[@class='complete_bg']
+    sleep    1
+    click button    id=p_confirm_btn
+    sleep    3
+
+删除教师
+    点击指定链接    xpath=//tbody[@id='teacher_tbody']/tr[1]/td[5]/a[2]    #删除教师信息
+    click button    xpath=//input[@id='p_cancel_btn']    #确认删除
+    wait until element is visible    xpath=//tbody[@id='teacher_tbody']/tr[1]/td[5]/a[2]    5
+    点击指定链接    xpath=//tbody[@id='teacher_tbody']/tr[1]/td[5]/a[2]
+    click button    xpath=//input[@id='p_confirm_btn']    #确认删除
+    sleep    1
+    wait until element is visible    id=p_confirm_btn    5
+    click button    id=p_confirm_btn
+
+添加院系
+    点击指定链接    xpath=//a[text()='[添加院系]']
+    ${a}    evaluate    random.randint(10,100)    random
+    输入内容    id=instituteName    测试管理系${a}
+    click button    xpath=//div[@id='add_institute']/div[2]/ul/li[3]/input[2]
+    sleep    1
+    点击指定链接    xpath=//ul[@id='browser']/li/ul/li[4]/span/a[2]    #添加专业
+    输入内容    id=professionName    测试管理专业${a}
+    click button    xpath=//div[@id='add_profession']/div[2]/ul/li[4]/input[2]
+    sleep    2
+    点击指定链接    xpath=//ul[@id='browser']/li/ul/li[4]/ul/li[1]/span/a[1]
+    输入内容    id=editProName    计算机科学技术${a}
+    click button    xpath=//div[@id='edit_profession']/div[2]/ul/li[4]/input[2]
+    sleep    2
+
+批量导入学生
+    点击指定链接    xpath=//ul[@id='browser']/li/ul/li[1]/ul/li[1]/span/a[4]
+    select window    title=组织管理
+    输入内容    id=input_prefix    52001
+    click button    xpath=//form[@id='upload_file_form']/input
+    sleep    2
+    Win Wait    打开    \    20
+    Win Activate    打开
+    Control Set Text    \    \    Edit1    D:\\ImportStudent.xlsx
+    sleep    2
+    Control Click    \    \    Button1
+    sleep    1
+    click button    id=uploadfiles
+    sleep    2
+    click button    id=generateButton
+    sleep    3
+
+创建管理员
+    点击指定链接    xpath=//a[text()='+ 创建二级管理员']
+    点击指定链接    xpath=//input[@class='hs_out_btn ']
+    点击指定链接    xpath=//a[text()='+ 创建二级管理员']
+    点击指定链接    id=yuanxi    #点击院系
+    点击指定链接    xpath=//select[@id='yuanxi']/option[2]    #选择院系
+    输入内容    id=unist_teacherName    测试员
+    ${b}    evaluate    random.randint(100,1000)    random
+    输入内容    id=unist_name    weipeng${b}
+    输入内容    id=unist_pwd    123456
+    点击指定链接    xpath=//input[@class='hs_out_btn hs_out_btn2']
+    click button    id=p_confirm_btn
+    wait until element is visible    id=p_confirm_btn
+    click button    id=p_confirm_btn
+    sleep    2
+
+编辑管理员
+    点击指定链接    xpath=//tbody[@id='univerUserList']/tr[1]/td[6]/a[1]
+    输入内容    id=unist_pwd    654321
+    点击指定链接    xpath=//input[@class='hs_out_btn hs_out_btn2']
+    click button    id=p_confirm_btn
+    wait until element is visible    id=p_confirm_btn
+    click button    id=p_confirm_btn
+    sleep    2
+
+删除管理员
+    点击指定链接    xpath=//tbody[@id='univerUserList']/tr[1]/td[6]/a[2]
+    click button    id=p_confirm_btn
+    wait until element is visible    id=p_confirm_btn
+    click button    id=p_confirm_btn
+    sleep    2
+
+搜索管理员
+    输入内容    id=userNameVal    计算机
+    click button    id=selUserNameBtn
+    sleep    2
+    点击指定链接    xpath=//a[text()='权限管理']    #点击权限管理
+
+基础信息修改
+    点击指定链接    xpath=//a[text()='账号管理']    #点击账号管理
+    输入内容    id=short_name_i    测试学校
+    点击指定链接    id=pickfiles
+    sleep    2
+    Win Wait    打开    \    20
+    Win Activate    打开
+    Control Set Text    \    \    Edit1    D:\\image1.jpg
+    sleep    2
+    Control Click    \    \    Button1
+    sleep    1
+    click button    id=uploadfiles
+    sleep    2
+    click button    id=p_confirm_btn
+    sleep    2
+    输入内容    intro    这个学校相当的不粗哦，！！！
+    click button    xpath=//input[@class='acc_btn save_btn']
+    sleep    2
+
+密码修改--异常修改
+    点击指定链接    id=update_pass_l
+    sleep    2
+    输入内容    id=password    852456
+    输入内容    id=new_password_input    123456
+    输入内容    id=affirm_password_input    123456
+    click button    xpath=//tbody/tr[5]/td[2]/input[1]
+    sleep    2
+    click button    id=p_confirm_btn
+    sleep    2
+
+修改密码--正常修改
+    点击指定链接    id=update_pass_l
+    输入内容    id=password    123456    #初始密码
+    输入内容    id=new_password_input    123456
+    输入内容    id=affirm_password_input    123456
+    click button    xpath=//tbody/tr[5]/td[2]/input[1]
+    sleep    2
+    click button    id=p_confirm_btn
+    sleep    2
+
+软件理论-取消课程配置
+    点击指定链接    xpath=//div[@class='c_lists']/dl[1]/dt/span[3]/a    #配置课程[1]
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[1]/a[text()='移动开发']
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[1]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[2]/a[text()='后端开发']    #点击后端开发
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[2]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[3]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[3]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[4]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[1]//label/input
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[2]//label/input
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[3]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[5]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[5]/li[1]//label/input
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[5]/li[2]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[6]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[6]/li[1]//label/input
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[6]/li[2]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[7]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[7]/li[1]//label/input
+    点击指定链接    id=bt_done
+
+软件测试-取消课程配置
+    点击指定链接    xpath=//div[@class='c_lists']/dl[2]/dt/span[3]/a    #配置课程[2]
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[1]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[1]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[2]/a[text()='后端开发']    #点击后端开发
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[2]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[3]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[3]/li//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[4]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[1]//label/input
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[2]//label/input
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[4]/li[3]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[5]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[5]/li[1]//label/input
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[5]/li[2]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[6]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[6]/li[1]//label/input
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[6]/li[2]//label/input
+    点击指定链接    xpath=//div[@class='kc_out_type']/ul/li[7]/a
+    unselect checkbox    xpath=//div[@class='kc_out_con']//div[2]//ul[7]/li[1]//label/input
+    点击指定链接    id=bt_done
+
+删除新建组织
+    点击指定链接    xpath=//ul[@id='browser']/li/ul/li[4]/ul/li[1]/span/a[6]    #删除专业
+    click button    xpath=//div[@class='create_main']/ul/li[2]/input[2]
+    wait until element is visible    id=p_confirm_btn    5
+    click button    id=p_confirm_btn
+    sleep    2
+    点击指定链接    xpath=//ul[@id='browser']/li/ul/li[4]/span/a[3]    #删除学院
+    click button    xpath=//div[@class='create_main']/ul/li[2]/input[2]
+    sleep    2
+
+数据筛选
+    点击指定链接    id=institute_select
+    click element    xpath=//select[@id='institute_select']/option[1]
+    click element    id=institute_select
+    点击指定链接    xpath=//select[@id='institute_select']/option[2]
+    点击指定链接    id=profession_select
+    click element    xpath=//select[@id='profession_select']/option[1]
+    click element    id=profession_select
+    点击指定链接    xpath=//select[@id='profession_select']/option[2]
+    点击指定链接    id=year_select
+    click element    xpath=//select[@id='year_select']//option[1]
+    click element    id=year_select
+    点击指定链接    xpath=//select[@id='year_select']//option[2]
+    点击指定链接    id=class_select
+    click element    xpath=//select[@id='class_select']/option[1]
+    click element    id=class_select
+    点击指定链接    xpath=//select[@id='class_select']/option[2]
+    sleep    2
+
+点击指定链接1
+    [Arguments]    ${logn}
+    click Element    ${logn}
+    sleep    1
+
+分类导航
+    select window    title = 职坐标-IT在线学习网站轻松学编程，快乐找工作！
+    mouse over    xpath=//a[text()='前端开发']    #鼠标经过
+    sleep    2
+    点击指定链接    xpath=//a[text()='前端开发']    #点击前端开发
+    wait until element is visible    xpath=//a[text()='前端开发']    3
+    关闭窗口    title = 职坐标 - IT在线学习领导品牌！学习java,c语言,安卓开发首选网站！
+    select window    title = 职坐标-IT在线学习网站轻松学编程，快乐找工作！
+    mouse over    xpath=//a[text()='后端开发']
+    sleep    2
+    点击指定链接    xpath=//a[text()='后端开发']
+    wait until element is visible    xpath=//a[text()='后端开发']    3
+    关闭窗口    title = 职坐标 - IT在线学习领导品牌！学习java,c语言,安卓开发首选网站！
+    select window    title = 职坐标-IT在线学习网站轻松学编程，快乐找工作！
+    mouse over    xpath=//a[text()='移动端开发']
+    sleep    2
+    点击指定链接    xpath=//a[text()='移动端开发']
+    关闭窗口    title = 职坐标 - IT在线学习领导品牌！学习java,c语言,安卓开发首选网站！
+    select window    title = 职坐标-IT在线学习网站轻松学编程，快乐找工作！
+    sleep    2
+    点击指定链接    xpath=//a[text()='物联网']
+    wait until element is visible    xpath=//a[text()='物联网']    3
+    关闭窗口    title = 职坐标 - IT在线学习领导品牌！学习java,c语言,安卓开发首选网站！
+    select window    title = 职坐标-IT在线学习网站轻松学编程，快乐找工作！
+    mouse over    xpath=//a[text()='就业班']
+    sleep    2
+    点击指定链接    xpath=//a[text()='就业班']
+    wait until element is visible    xpath=//a[text()='就业班']    3
+    go to    http://www.zhizuobiao.com/
+    select window    title = 职坐标-IT在线学习网站轻松学编程，快乐找工作！
+    点击指定链接    xpath=//a[text()='HTML']
+    关闭窗口    title = 职坐标 - IT在线学习领导品牌！学习java,c语言,安卓开发首选网站！
+    select window    title = 职坐标-IT在线学习网站轻松学编程，快乐找工作！
+    sleep    2
+
+关闭窗口
+    close window
+    kill driver    chromedriver.exe
+
+就业班模块
+    mouse over    xpath=//p[text()='零基础·包就业·安卓线上直播班']
+    sleep    1
+    mouse over    xpath=//p[text()='零基础·包就业·JavaEE线上直播班']
+    sleep    1
+    mouse over    xpath=//p[text()='零基础·包就业·PHP线上直播班']
+    sleep    1
+    click element    xpath=//p[text()='零基础·包就业·PHP线上直播班']
+    sleep    2
+    关闭窗口    title = 职坐标 - IT在线学习网站！轻松学编程，快乐找工作！
+    select window    title = 职坐标-IT在线学习网站轻松学编程，快乐找工作！
+
+课程库模块
+    点击指定链接    xpath=//a[text()='IOS']
+    点击指定链接    xpath=//a[text()='Java']
+    点击指定链接    xpath=//a[text()='Web前端']
+    sleep    2
+    点击指定链接    xpath=//div[@id='t_all']/div[1]/a
+    mouse over    xpath=//a[text()='开始学习']
+    go to    http://www.zhizuobiao.com/
+
+分配菜单权限
+
+权限管理--创建角色
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[4]/a/span
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[4]/nav/ul/li[1]/a/span
+    wait until page contains element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[2]/button[2]    5    新建按钮不能正常显示
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[2]/button[2]
+    input text    xpath=//html/body/div/div[2]/div/div[2]/div/form/div[1]/div[1]/input    测试用角色
+    input text    xpath=//html/body/div/div[2]/div/div[2]/div/form/div[2]/div[1]/textarea    这是一个用来做测试的角色
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div/form/div[7]/div/button[1]
+    sleep    1
+    page should contain    测试用角色    创建角色失败
+    log    创建角色成功
+
+权限管理--修改角色
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[5]/button[2]
+    set selenium speed    0.1
+    ${C}=    evaluate    random.randint(2,6)    random,sys
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/ul/li[${C}]/input
+    ${D}=    evaluate    random.randint(2,6)    random,sys
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/ul/li[${D}]/input
+    select checkbox    xpath=//.//*[@id='schoolLocation']
+    select checkbox    xpath=//.//*[@id='agentInfo']
+    select checkbox    xpath=//.//*[@id='menu']
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/button[1]
+    sleep    1
+    log    修改角色成功
+    set selenium speed    0.5
+
+权限管理--删除角色
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[5]/button[1]
+    click element    xpath=//.//*[@id='noValid']
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div/form/div[7]/div/button[1]
+    log    冻结角色成功
+    sleep    1
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[5]/button[3]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[4]/div/div/div[3]/button[1]
+    page should not contain    测试用角色    删除角色失败
+    log    删除角色成功
+
+权限管理--新建菜单
+    click element    xpath=//html/body/div/div[2]/div/div[2]/form/div/button
+    input text    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[1]/div[1]/input    测试一级菜单
+    ${C}=    evaluate    random.randint(30,99)    random,sys
+    input text    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[4]/div[1]/input    ${C}
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[8]/div/button[1]
+    sleep    1
+    page should contain    测试一级菜单    创建一级菜单成功
+    #新建二级菜单
+    click element    xpath=//html/body/div/div[2]/div/div[2]/form/div/button
+    input text    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[1]/div[1]/input    测试二级菜单
+    click element    xpath=//.//*[@id='second']    #选择类型为二级菜单
+    ${count}    get matching xpath count    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[3]/div[1]/select/option
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[3]/div[1]/select
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[3]/div[1]/select/option[${count}]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[3]/div[1]/select/option[${count}]
+    input text    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[4]/div[1]/input    1
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[8]/div/button[1]
+    sleep    0.5
+    page should contain    测试二级菜单    创建二级菜单成功
+
+检测内容是否存在
+    [Arguments]    ${contain_ky}
+    page should contain    ${contain_ky}    找到${contain_ky}
+
+删除二级菜单
+    ${count}    get matching xpath count    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody[${count}]/tr[2]/td[7]/button
+    click element    xpath=//.//*[@id='noValid']
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[8]/div/button[1]
+    sleep    0.5
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody[${count}]/tr[2]/td[7]/button[2]
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[3]/div/div/div[3]/button[1]
+    sleep    1
+    #page should not contain    测试二级菜单    二级菜单删除失败
+    #编辑一级菜单
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody[${count}]/tr/td[7]/button    15
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody[${count}]/tr/td[7]/button
+    click element    xpath=//input[@id='noValid' and @type='radio']
+    sleep    0.5
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[8]/div/button[1]
+    sleep    0.5
+    #删除一级菜单
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody[${count}]/tr/td[7]/button[2]
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[3]/div/div/div[3]/button[1]
+    sleep    0.5
+    #page should not contain    测试一级菜单    一级菜单删除失败
+
+删除一级菜单
+    #编辑一级菜单
+    ${count}    get matching xpath count    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody[${count}]/tr[1]/td[7]/button
+    click element    xpath=//input[@id='noValid' and @type='radio']
+    sleep    0.5
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/div[8]/div/button[1]
+    sleep    1
+    #删除一级菜单
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[1]/table/tbody[${count}]/tr/td[7]/button[2]
+    click button    xpath=//html/body/div/div[2]/div/div[2]/div[3]/div/div/div[3]/button[1]
+    sleep    1
+    #page should not contain    测试一级菜单    一级菜单删除失败
+
+白名单管理--移除白名单（机构）
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[5]/a/span
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[5]/nav/ul/li/a/span
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/thead/tr/th[5]
+    ${jg_name}    get text    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[1]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[6]/button
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[4]/div/div/div[3]/button[1]
+    sleep    2
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/button    20
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[2]/a/span
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[2]/nav/ul/li[1]/a/span
+    go to    http://manage-pre.xiaoyezi.com/#!/stat/school
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[1]    20
+    page should contain    ${jg_name}    移除白名单成功
+
+白名单管理--移除白名单（代理商）
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[5]/a/span
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[5]/nav/ul/li/a/span
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/thead/tr/th[5]
+    ${jg_name}    get text    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[1]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[6]/button
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[4]/div/div/div[3]/button[1]
+    sleep    2
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[1]/form/button    20
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[2]/a/span
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[2]/nav/ul/li[3]/a/span
+    go to    http://manage-pre.xiaoyezi.com/#!/stat/agentInfo
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr[1]/td[2]    20
+    page should contain    ${jg_name}    移除白名单成功
+
+设置--修改密码
+    [Arguments]    ${password_old}    ${password_new}
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[6]/a/span
+    click element    xpath=//html/body/div/div[1]/nav/ul/li[6]/nav/ul/li/a/span
+    wait until element is visible    xpath=//html/body/div/div[2]/div[1]/div[2]/div/form/div[1]/div[1]/input    20
+    set selenium speed    0.1
+    input text    xpath=//html/body/div/div[2]/div[1]/div[2]/div/form/div[1]/div[1]/input    ${password_old}
+    input text    xpath=//html/body/div/div[2]/div[1]/div[2]/div/form/div[2]/div[1]/input    ${password_new}
+    input text    xpath=//html/body/div/div[2]/div[1]/div[2]/div/form/div[3]/div[1]/input    ${password_new}
+    click button    xpath=//html/body/div/div[2]/div[1]/div[2]/div/form/div[4]/div/button
+    execute javascript    alert('修改密码完成')
+    take screenshot
+    set selenium speed    0.2
+
+用户管理--冻结账号
+    [Arguments]    ${user_listid}
+    click element    xpath=//html/body/div/div[2]/div/div[2]/table/tbody/tr[${user_listid}]/td[8]/button[3]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[4]/div/div/div[3]/button[1]
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/table/tbody/tr[1]/td[6]    20
+    ${staic}=    get text    xpath=//html/body/div/div[2]/div/div[2]/table/tbody/tr[${user_listid}]/td[6]
+    run keyword if    '${staic}'=='正常'    用户管理--冻结账号    ${user_listid}
+    ...    ELSE    用户管理--删除账号    ${user_listid}
+
+用户管理--删除账号
+    [Arguments]    ${user_listid}
+    ${name_del}=    get text    xpath=//html/body/div/div[2]/div/div[2]/table/tbody/tr[${user_listid}]/td[1]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/table/tbody/tr[${user_listid}]/td[8]/button[5]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[4]/div/div/div[3]/button[1]
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/table/tbody/tr[1]/td[1]    20
+    page should not contain    ${name_del}    用户${name_del}删除成功
+
+机构信息页面检测
+    [Arguments]    ${list_num}    ${location}
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr[${list_num}]/td[7]/button[1]
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[2]/div[1]/div/span[1]
+    ${list}=    get text    xpath=//html/body/div/div[2]/div/div[2]/div[2]/div[1]/div/span[1]
+    run keyword if    '${list}'=='${location}'    log    机构信息页面检测通过
+    ...    ELSE    click element    机构信息页面检测失败，机构总数为${list_num},此处只有${list}条数据
+    ${list_info}=    get matching xpath count    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr
+    ${info}=    evaluate    random.randint(1,${list_info})    random,sys
+    ${info_name}=    get text    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[${info}]/td[1]
+    ${code}=    substring num    ${info_name}    #获取机构代码编号
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[${info}]/td[13]/button
+    wait until element is visible    xpath=//html/body/div/div[2]/div[1]/div[2]/div[1]/div/div/p[4]    15
+    page should contain    ${code}    15
+    take screenshot
+
+机构位置页面检测
+    [Arguments]    ${list_index}
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr[${list_num}]/td[7]/button[2]
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[2]/div[1]/form/div[2]/button
+    ${list}=    run keyword and return status    get text    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tfoot/tr/td
+    #${list}=    get text    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tfoot/tr/td
+    ${list_info}=    get matching xpath count    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr
+    run keyword if    '${list}'=='True'    log    当前代理商暂无机构位置信息
+    ...    ELSE    机构位置详情页面检测
+    take screenshot
+
+机构续费巡查页面检测
+    [Arguments]    ${list_index}
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr[${list_index}]/td[7]/button[3]
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr[1]/td[1]
+    ${list_info}=    get matching xpath count    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr
+    ${info}=    evaluate    random.randint(1,${list_info})    random,sys
+    ${name}=    get text    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr[${info}]/td[1]
+    ${class_name}=    get text    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr[${info}]/td[6]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[3]/table/tbody/tr[${info}]/td[11]/button
+    wait until element is visible    xpath=//html/body/div/div[2]/div/div[2]/div[3]/div[3]/div/div/div[1]/h4    15
+    page should contain    ${name}    15
+    #execute javascript    alert('机构续费巡查页面检测通过')
+    take screenshot
+    sleep    1
+
+机构位置详情页面检测
+    ${add}=    get text    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[1]
+    click element    xpath=//html/body/div/div[2]/div/div[2]/div[2]/table/tbody/tr[1]/td[6]/button
+    wait until element is visible    xpath=//html/body/div/div[2]/div[1]/div[2]/div[1]/div/div/p[4]    15
+    page should contain    ${add}    15
+    #execute javascript    alert('机构位置详情页面检测通过')
+    take screenshot
+    sleep    1
+
+权限管理--用户管理--删除用户
+    ${static}=    get text    xpath=//html/body/div/div[2]/div/div[2]/table/tbody/tr[1]/td[6]
+    run keyword if    '${static}'=='正常'    用户管理--冻结账号    1
+    ...    ELSE    用户管理--删除账号    1
+
+登录PRO
+    [Arguments]    ${username}    ${password}
+    kill driver    chrome.exe
+    kill driver    chromedriver.exe
+    open browser    http://manage-pre.xiaoyezi.com/#!/pandect/dashboard    gc
+    wait until element is visible    xpath=//html/body/div/div/form/table/tbody/tr[1]/td[2]/input
+    select window    title=Piano Classroom
+    maximize browser window
+    input text    xpath=//html/body/div/div/form/table/tbody/tr[1]/td[2]/input    ${username}
+    input text    xpath=//html/body/div/div/form/table/tbody/tr[2]/td[2]/input    ${password}
+    click element    xpath=//html/body/div/div/form/table/tbody/tr[3]/td[2]/input
+    sleep    1
+    set selenium speed    0.3
+    wait until element is visible    xpath=//html/body/header/div[2]/span    20
