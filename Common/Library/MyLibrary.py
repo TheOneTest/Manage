@@ -87,7 +87,7 @@ class MyLibrary():
     def inspect_Macrobt(self,macro_num,room_num,class_num,teacher_num,student_num,class_p,macro_s,room_s,class_s,teacher_s,student_s,class_ps):
         num_p = int(macro_num)+int(room_num)+int(class_num)+int(teacher_num)+int(student_num)+int(class_p)
 
-        num_m = int(macro_s)+int(room_s)+int(class_s)+int(teacher_s)+int(student_s)+int(class_s)
+        num_m = int(macro_s)+int(room_s)+int(class_s)+int(teacher_s)+int(student_s)+int(class_ps)
 
         if num_m == num_p:
             print "宏观数据校验通过！！！"
