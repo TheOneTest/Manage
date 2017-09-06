@@ -20,3 +20,14 @@ class MyAppLibrary():
         str=''.join(random.sample(string.ascii_lowercase,6))
         return str
 
+    #验证智能钢琴--名曲速成列表中向上滑动加载数据功能
+    def list_Loading(self,name_list):
+        num = len(name_list)
+        list_string = list(set(name_list))
+        num_new = len(list_string)
+
+        if num != num_new:            
+            print "列表中存在相同数据，校验失败"
+            raise ValueError
+        
+

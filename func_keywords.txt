@@ -2,6 +2,7 @@
 Library           AppiumLibrary
 Library           Screenshot
 Library           Common/Library/MyAppLibrary.py
+Library           Common/Library/Exceledit.py
 
 *** Keywords ***
 启动程序
@@ -68,10 +69,13 @@ Library           Common/Library/MyAppLibrary.py
     ${username}=    get text    id=com.theonepiano.smartpiano:id/avatar_title
     run keyword if    '${username}'!='登录后收藏琴谱,手机平板多端同步'    导航退出登录
     ...    ELSE    click element    name=热门推荐
+    sleep    0.3
 
 导航退出登录
     click element    id=com.theonepiano.smartpiano:id/account_view    #点击用户头像
+    sleep    0.5
     click element    id=com.theonepiano.smartpiano:id/logout    #点击退出
+    sleep    1
     page should contain text    立即登录    退出登录成功
     press keycode    4
 
@@ -83,6 +87,34 @@ Library           Common/Library/MyAppLibrary.py
     click a point    295    1118    100    #输入字符c
     click a point    611    896    100    #输入字符o
     click a point    576    1121    100    #输入字符m
+    sleep    1
 
 修改密码
-    input text
+    [Arguments]    ${pwd}    ${new_pwd}
+    input text    id=com.theonepiano.smartpiano:id/old_password    ${pwd}
+    sleep    0.3
+    input text    id=com.theonepiano.smartpiano:id/new_password    ${new_pwd}
+    input text    id=com.theonepiano.smartpiano:id/verify_password    ${new_pwd}
+    sleep    0.3
+    click element    id=com.theonepiano.smartpiano:id/submit
+    sleep    0.3
+    press keycode    4
+    sleep    1
+
+写入excel
+    [Arguments]    ${row}    ${col}    ${value}
+    sleep    2
+    write excel
+
+名曲速成--列表数据验证
+    swipe    350    1230    350    250
+    sleep    2
+    ${list_name}=    get text    id=com.theonepiano.smartpiano:id/song_title
+    #log    ${list_name}
+    [Return]    ${list_name}
+
+随机向上滑动
+    [Arguments]    ${num}
+    :FOR    ${N}    IN RANGE    1    ${num}
+    \    swipe    350    1230    350    250
+    \    sleep    0.3

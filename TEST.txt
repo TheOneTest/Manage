@@ -2,6 +2,9 @@
 Library           AppiumLibrary
 Library           Common/Library/MyAppLibrary.py
 Library           Selenium2Library
+Library           ExcelLibrary
+Library           Common/Library/Exceledit.py
+Resource          func_keywords.txt
 
 *** Test Cases ***
 TEST1
@@ -9,4 +12,4 @@ TEST1
     LOG    ${index}
 
 TEST2
-    open browser    http://www.baidu.com    gc
+    log    ${num}

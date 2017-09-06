@@ -8,7 +8,7 @@ Setup_Testbed_variable
     Set Environment Variable    G_HOST_NAME    ${EMPTY}    #记录主机IP地址
     #Set Environment Variable    G_HOST_IP    ${HOSTIP}
     #Path Info
-    Set Environment Variable    G_SQAROOT    F:\\robotframework
+    Set Environment Variable    G_SQAROOT    D:\\robotframework
     Set Environment Variable    G_LOG    %{G_SQAROOT}\\logs
     Set Environment Variable    G_CURRENTLOG    ${OUTPUT_DIR}
 
