@@ -12,5 +12,5 @@ TEST1
     LOG    ${index}
 
 TEST2
-    sleep    10
+    ${num}    evaluate    random.randint(1,6)    random
     log    ${num}

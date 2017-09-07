@@ -29,5 +29,16 @@ class MyAppLibrary():
         if num != num_new:            
             print "列表中存在相同数据，校验失败"
             raise ValueError
+
+    #视频教程详情页数据校验
+    def inspect_Vedio(self,title,desc,list_num):
+        if title == '' or title == None or desc == '' or desc == None or int(list_num) < 5:
+            raise ValueError
+    
+    #个人中心导航校验
+    def inspect_usercenter(self,username,collection,record,sound,tools,sett):
+        if username != '我的账号' or collection != '我的收藏' or record != '历史记录' or sound != '我的录音' or tools != '学习工具' or sett != '音色设置':
+            raise ValueError
+            
         
 
