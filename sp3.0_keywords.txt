@@ -68,7 +68,7 @@ Library           Common/Library/Exceledit.py
 检查用户登录状态
     ${username}=    get text    id=com.theonepiano.smartpiano:id/avatar_title
     run keyword if    '${username}'!='登录后收藏琴谱,手机平板多端同步'    导航退出登录
-    ...    ELSE    click element    name=热门推荐
+    ...    ELSE    log    登录已退出
     sleep    0.3
 
 导航退出登录
@@ -237,3 +237,31 @@ Library           Common/Library/Exceledit.py
     ${list_name}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.View[1]/android.widget.GridView[1]/android.widget.FrameLayout[6]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
     #log    ${list_name}
     [Return]    ${list_name}
+
+用户登录
+    [Arguments]    ${username}    ${passwd}
+    sleep    0.3
+    input text    id=com.theonepiano.smartpiano:id/email    ${username}
+    sleep    0.3
+    input text    id=com.theonepiano.smartpiano:id/password    ${passwd}
+    click element    id=com.theonepiano.smartpiano:id/action_login
+    wait until element is visible    id=com.theonepiano.smartpiano:id/drawer_icon
+    #校验是否登录成功
+    sleep    0.3
+    click element    id=com.theonepiano.smartpiano:id/drawer_icon
+    ${real_em}=    get text    id=com.theonepiano.smartpiano:id/avatar_title
+    run keyword if    'wp123@qq.com'=='${real_em}'    log    用户登录成功
+    ...    ELSE    click element    用户登录失败
+    log    ${real_em}
+
+我的页面登录账号
+    click element    id=com.theonepiano.smartpiano:id/user_info    #点击进入登录页面
+    用户登录    wp123@qq.com    a123456
+    wait until element is visible    name=我的收藏    15
+    click element    name=我的收藏
+
+取消第一条数据的收藏
+
+清空我的收藏
+    ${count}=    get matching xpath count    xpath=//android.widget.ListView[@resource-id=\"com.theonepiano.smartpiano:id/list_view\"]/android.widget.LinearLayout
+    run keyword if    ${count}>1    取消第一条数据的收藏

@@ -4,12 +4,12 @@ Library           Common/Library/MyAppLibrary.py
 Library           Selenium2Library
 Library           ExcelLibrary
 Library           Common/Library/Exceledit.py
-Resource          func_keywords.txt
+Resource          sp3.0_keywords.txt
 
 *** Test Cases ***
 TEST1
-    ${index}=    random num
-    LOG    ${index}
+    :FOR    ${N}    IN RANGE    1    7
+    \    LOG    ${N}
 
 TEST2
     ${num}    evaluate    random.randint(1,6)    random

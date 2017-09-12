@@ -4,7 +4,7 @@ Suite Teardown
 Library           AppiumLibrary
 Library           Screenshot
 Library           Common/Library/MyAppLibrary.py
-Resource          func_keywords.txt
+Resource          sp3.0_keywords.txt
 Library           Common/Library/Exceledit.py
 
 *** Test Cases ***
@@ -24,20 +24,20 @@ Library           Common/Library/Exceledit.py
     inspect_usercenter    我的账号    ${list2}    ${list3}    ${list4}    ${list5}    ${list6}
     [Teardown]    关闭程序
 
-(平板）智能钢琴--个人中心--导航检测
+(手机)只能钢琴--个人中心--我的收藏
     [Setup]    启动程序
     wait until element is visible    xpath=//android.widget.FrameLayout[@resource-id=\"com.theonepiano.smartpiano:id/btn_led\"]/android.widget.ImageView[1]    15
     click element    xpath=//android.widget.FrameLayout[@resource-id=\"com.theonepiano.smartpiano:id/btn_kara\"]/android.widget.ImageView[1]
     wait until element is visible    id=com.theonepiano.smartpiano:id/drawer_icon
     click element    id=com.theonepiano.smartpiano:id/drawer_icon
     click element    name=我的
-    ${list1}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    ${list2}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[2]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    ${list3}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[3]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    ${list4}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[4]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    ${list5}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[5]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    ${list6}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[6]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    inspect_usercenter    ${list1}    ${list2}    ${list3}    ${list4}    ${list5}    ${list6}
+    wait until element is visible    id=com.theonepiano.smartpiano:id/title
+    ${username}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout[1]/android.widget.RelativeLayout[1]/android.widget.TextView[1]
+    run keyword if    '${username}'=='登录后收藏琴谱,手机平板多端同步'    我的页面登录账号
+    wait until element is visible    name=我的收藏    15
+    click element    name=我的收藏
+    #查询我的收藏数据量
+    清空我的收藏
     [Teardown]    关闭程序
 
 智能钢琴--用户注册
@@ -82,23 +82,7 @@ Library           Common/Library/Exceledit.py
     click element    id=com.theonepiano.smartpiano:id/drawer_icon
     sleep    0.3
     click element    id=com.theonepiano.smartpiano:id/account_view    #点击进入登录页面
-    sleep    0.3
-    input text    id=com.theonepiano.smartpiano:id/email    wp123
-    sleep    0.3
-    input text    id=com.theonepiano.smartpiano:id/password    a123456
-    click element    id=com.theonepiano.smartpiano:id/email
-    sleep    1
-    输入邮箱文本
-    press keycode    4
-    click element    id=com.theonepiano.smartpiano:id/action_login
-    wait until element is visible    id=com.theonepiano.smartpiano:id/drawer_icon
-    #校验是否登录成功
-    sleep    0.3
-    click element    id=com.theonepiano.smartpiano:id/drawer_icon
-    ${real_em}=    get text    id=com.theonepiano.smartpiano:id/avatar_title
-    run keyword if    'wp123@qq.com'=='${real_em}'    log    用户登录成功
-    ...    ELSE    click element    用户登录失败
-    log    ${real_em}
+    用户登录    wp123@qq.com    a123456
     导航退出登录
     [Teardown]    关闭程序
 
@@ -333,4 +317,20 @@ Library           Common/Library/Exceledit.py
     wait until element is visible    id=com.theonepiano.smartpiano:id/history
     click element    id=com.theonepiano.smartpiano:id/history    #点击弹奏历史按钮
     Capture Page Screenshot
+    [Teardown]    关闭程序
+
+(平板）智能钢琴--个人中心--导航检测
+    [Setup]    启动程序
+    wait until element is visible    xpath=//android.widget.FrameLayout[@resource-id=\"com.theonepiano.smartpiano:id/btn_led\"]/android.widget.ImageView[1]    15
+    click element    xpath=//android.widget.FrameLayout[@resource-id=\"com.theonepiano.smartpiano:id/btn_kara\"]/android.widget.ImageView[1]
+    wait until element is visible    id=com.theonepiano.smartpiano:id/drawer_icon
+    click element    id=com.theonepiano.smartpiano:id/drawer_icon
+    click element    name=我的
+    ${list1}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    ${list2}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[2]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    ${list3}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[3]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    ${list4}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[4]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    ${list5}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[5]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    ${list6}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[6]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    inspect_usercenter    ${list1}    ${list2}    ${list3}    ${list4}    ${list5}    ${list6}
     [Teardown]    关闭程序

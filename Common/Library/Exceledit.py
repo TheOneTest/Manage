@@ -13,7 +13,7 @@ def open_excel(self,file):
     except Exception,e:
         print str(e)
 
-def Write_Excel(L=None):
+def Write_Excel(self,L=None):
     if L is None:
         L=[]
 
