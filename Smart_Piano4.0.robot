@@ -13,6 +13,7 @@ Library           Common/Library/Exceledit.py
     wait until element is visible    name=曲集
     click element    name=曲集
     sleep    3
+    swipe    440    1380    440    100
     #click a point    415    500
     #监测课程章节
     遍历所有曲谱
@@ -22,34 +23,112 @@ Library           Common/Library/Exceledit.py
     [Setup]    启动程序
     wait until element is visible    xpath=//android.widget.HorizontalScrollView[@resource-id=\"com.theonepiano.smartpiano:id/tab\"]/android.widget.LinearLayout[1]/android.widget.RelativeLayout[2]/android.widget.TextView[1]
     click element    xpath=//android.widget.HorizontalScrollView[@resource-id=\"com.theonepiano.smartpiano:id/tab\"]/android.widget.LinearLayout[1]/android.widget.RelativeLayout[2]/android.widget.TextView[1]
+    sleep    20
     遍历所有游戏
     [Teardown]    关闭程序
 
 (手机)智能钢琴--个人中心--导航检测
     [Setup]    启动程序
     wait until element is visible    name=我的
-    #click element    name=我的
-    #click element    xpath=//android.widget.TextView[@resource-id=\"com.theonepiano.smartpiano:id/tv_pref_name\"]
-    #sleep    10
-    ${count}=    get matching xpath count    xpath=//android.widget.ImageView[@resource-id=\"com.theonepiano.smartpiano:id/iv_collection_cover\"]
-    click element    xpath=//android.widget.ImageView[@resource-id=\"com.theonepiano.smartpiano:id/iv_collection_cover\"][3]
-    sleep    10
+    click element    name=我的
+    wait until element is visible    xpath=//android.widget.LinearLayout[@resource-id=\"com.theonepiano.smartpiano:id/pv_my_like\"]/android.widget.LinearLayout[1]/android.widget.TextView[1]    5
+    ${name}=    get text    xpath=//android.widget.LinearLayout[@resource-id=\"com.theonepiano.smartpiano:id/pv_my_like\"]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    run keyword if    '${name}'!='我的收藏'    click element    无法找到我的收藏
+    ${name1}=    get text    xpath=//android.widget.LinearLayout[@resource-id=\"com.theonepiano.smartpiano:id/pv_my_recording\"]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    run keyword if    '${name1}'!='我的录音'    click element    无法找到我的录音
+    ${name2}=    get text    xpath=//android.widget.LinearLayout[@resource-id=\"com.theonepiano.smartpiano:id/pv_learning_tools\"]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    run keyword if    '${name2}'!='学习工具'    click element    无法找到我的收藏
+    ${name3}=    get text    xpath=//android.widget.LinearLayout[@resource-id=\"com.theonepiano.smartpiano:id/pv_tone_setting\"]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    run keyword if    '${name3}'!='音色设置'    click element    无法找到我的录音
+    log    (手机)智能钢琴--个人中心--导航检测 测试通过
     [Teardown]    关闭程序
 
-(手机)只能钢琴--个人中心--我的收藏
+(手机)智能钢琴--个人中心--我的收藏
     [Setup]    启动程序
-    wait until element is visible    xpath=//android.widget.FrameLayout[@resource-id=\"com.theonepiano.smartpiano:id/btn_led\"]/android.widget.ImageView[1]    15
-    click element    xpath=//android.widget.FrameLayout[@resource-id=\"com.theonepiano.smartpiano:id/btn_kara\"]/android.widget.ImageView[1]
-    wait until element is visible    id=com.theonepiano.smartpiano:id/drawer_icon
-    click element    id=com.theonepiano.smartpiano:id/drawer_icon
+    wait until element is visible    name=我的
     click element    name=我的
-    wait until element is visible    id=com.theonepiano.smartpiano:id/title
-    ${username}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout[1]/android.widget.RelativeLayout[1]/android.widget.TextView[1]
-    run keyword if    '${username}'=='登录后收藏琴谱,手机平板多端同步'    我的页面登录账号
-    wait until element is visible    name=我的收藏    15
+    wait until element is visible    name=我的收藏    5
     click element    name=我的收藏
-    #查询我的收藏数据量
     清空我的收藏
+    click element    xpath=//android.widget.LinearLayout/android.widget.RelativeLayout[2]
+    清空我的收藏--曲集
+    press keycode    4
+    sleep    2
+    click element    name=曲库
+    sleep    2
+    click a point    730    1200
+    sleep    3
+    wait until element is visible    id=com.theonepiano.smartpiano:id/iv_favorite    # 曲集加入收藏
+    click element    id=com.theonepiano.smartpiano:id/iv_favorite    # 曲集加入收藏
+    sleep    4
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+    ${title}=    get text    xpath=//android.widget.TextView[@resource-id=\"com.theonepiano.smartpiano:id/tv_album_name\"]
+    ${name}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[2]/android.widget.FrameLayout[1]/android.view.View[1]/android.support.v7.widget.RecyclerView[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    收藏第一节课程
+    press keycode    4
+    wait until element is visible    name=我的
+    click element    name=我的
+    wait until element is visible    name=我的收藏    5
+    click element    name=我的收藏
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]
+    page should contain text    ${name}    10
+    click element    xpath=//android.widget.LinearLayout/android.widget.RelativeLayout[2]
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]
+    page should contain text    ${title}    10
+    [Teardown]    关闭程序
+
+(手机)智能钢琴--个人中心--我的录音
+    [Setup]    启动程序
+    wait until element is visible    name=我的
+    click element    name=我的
+    wait until element is visible    name=我的录音    5
+    click element    name=我的录音
+    清空我的录音
+    press keycode    4
+    sleep    2
+    click element    name=曲库
+    sleep    2
+    click a point    730    1200
+    sleep    3
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+    ${name}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[2]/android.widget.FrameLayout[1]/android.view.View[1]/android.support.v7.widget.RecyclerView[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    sleep    5
+    添加琴音录制
+    添加弹唱录制
+    press keycode    4
+    wait until element is visible    id=com.theonepiano.smartpiano:id/tv_toolbar_title
+    press keycode    4
+    wait until element is visible    name=我的
+    click element    name=我的
+    wait until element is visible    name=我的录音    5
+    click element    name=我的录音
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]
+    page should contain text    ${name}    10
+    sleep    1
+    Long Press    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]
+    sleep    1
+    click element    id=com.theonepiano.smartpiano:id/select_dialog_listview
+    page should contain text    ${name}    10
+    [Teardown]    关闭程序
+
+(手机)智能钢琴--个人中心--学习工具
+    [Setup]    启动程序
+    wait until element is visible    name=我的
+    click element    name=我的
+    wait until element is visible    name=学习工具    5
+    click element    name=学习工具
+    page should contain text    该功能正在优化，敬请期待    10
+    click element    id=android:id/button1
+    [Teardown]    关闭程序
+
+(手机)智能钢琴--个人中心--音色设置
+    [Setup]    启动程序
+    wait until element is visible    name=我的
+    click element    name=我的
+    wait until element is visible    name=音色设置    5
+    click element    name=音色设置
+    capture page screenshot
     [Teardown]    关闭程序
 
 智能钢琴--用户注册
@@ -345,4 +424,49 @@ Library           Common/Library/Exceledit.py
     ${list5}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[5]/android.widget.LinearLayout[1]/android.widget.TextView[1]
     ${list6}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.support.v4.widget.DrawerLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[6]/android.widget.LinearLayout[1]/android.widget.TextView[1]
     inspect_usercenter    ${list1}    ${list2}    ${list3}    ${list4}    ${list5}    ${list6}
+    [Teardown]    关闭程序
+
+智能钢琴--曲谱视频资源监测简版
+    [Setup]    启动程序
+    wait until element is visible    name=曲集
+    click element    name=曲集
+    sleep    3
+    #监测课程章节
+    遍历所有曲谱简版
+    [Teardown]    关闭程序
+
+智能钢琴--游戏资源监测简版
+    [Setup]    启动程序
+    wait until element is visible    xpath=//android.widget.HorizontalScrollView[@resource-id=\"com.theonepiano.smartpiano:id/tab\"]/android.widget.LinearLayout[1]/android.widget.RelativeLayout[2]/android.widget.TextView[1]
+    click element    xpath=//android.widget.HorizontalScrollView[@resource-id=\"com.theonepiano.smartpiano:id/tab\"]/android.widget.LinearLayout[1]/android.widget.RelativeLayout[2]/android.widget.TextView[1]
+    sleep    10
+    遍历所有游戏简版
+    [Teardown]    关闭程序
+
+智能钢琴--新手入门教程资源监测
+    [Setup]    启动程序
+    wait until element is visible    name=教程
+    click element    name=教程
+    sleep    3
+    wait until element is visible    name=新手入门
+    click element    name=新手入门
+    遍历所有新手入门教程
+    [Teardown]    关闭程序
+
+智能钢琴-单曲讲解教程资源监测
+    [Setup]    启动程序
+    wait until element is visible    name=教程
+    click element    name=教程
+    sleep    3
+    wait until element is visible    name=单曲讲解
+    click element    name=单曲讲解
+    遍历所有单曲讲解教程
+    [Teardown]    关闭程序
+
+test
+    [Setup]    启动程序
+    wait until element is visible    name=曲集
+    click element    name=曲集
+    sleep    20
+    课节大于7的所有曲目
     [Teardown]    关闭程序

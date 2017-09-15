@@ -261,10 +261,19 @@ Library           Common/Library/Exceledit.py
     click element    name=我的收藏
 
 取消第一条数据的收藏
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    sleep    5
+    wait until element is visible    xpath=//android.support.v4.widget.DrawerLayout/android.widget.FrameLayout[1]/android.view.View[1]    10
+    sleep    5
+    click a point    1302    53
+    press keycode    4
+    sleep    3
+    清空我的收藏
 
 清空我的收藏
-    ${count}=    get matching xpath count    xpath=//android.widget.ListView[@resource-id=\"com.theonepiano.smartpiano:id/list_view\"]/android.widget.LinearLayout
-    run keyword if    ${count}>1    取消第一条数据的收藏
+    ${static}=    get matching xpath count    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]
+    run keyword if    ${static}>0    取消第一条数据的收藏
+    page should contain text    暂无收藏    页面异常，无法找到“暂无收藏”
 
 遍历曲谱中所有曲目
     wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[2]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
@@ -281,7 +290,7 @@ Library           Common/Library/Exceledit.py
 
 课节小于7的所有曲目
     [Arguments]    ${count}
-    :FOR    ${N}    IN RANGE    1    ${count}
+    : FOR    ${N}    IN RANGE    1    ${count}
     \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
     \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]
     \    sleep    1
@@ -290,27 +299,30 @@ Library           Common/Library/Exceledit.py
     \    sleep    3
 
 课节大于7的所有曲目
-    :FOR    ${N}    IN RANGE    2    8
+    : FOR    ${N}    IN RANGE    2    8
     \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
     \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    \    sleep    1
+    \    sleep    5
     \    wait until element is visible    xpath=//android.support.v4.widget.DrawerLayout/android.widget.FrameLayout[1]/android.view.View[1]    10
     \    press keycode    4
-    \    sleep    3
-    ${title_old}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[2]/android.widget.FrameLayout[1]/android.view.View[1]/android.support.v7.widget.RecyclerView[1]/android.widget.LinearLayout[7]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    swipe    450    1221    450    531
+    \    sleep    5
+    sleep    5
+    ${title_old}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[2]/android.widget.FrameLayout[1]/android.view.View[1]/android.support.v7.widget.RecyclerView[1]/android.widget.LinearLayout[6]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    swipe    450    1221    450    600
     sleep    2
-    ${title_new}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[2]/android.widget.FrameLayout[1]/android.view.View[1]/android.support.v7.widget.RecyclerView[1]/android.widget.LinearLayout[7]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    ${title_new}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[2]/android.widget.FrameLayout[1]/android.view.View[1]/android.support.v7.widget.RecyclerView[1]/android.widget.LinearLayout[6]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
     run keyword if    '${title_old}'=='${title_new}'    log    ${title_new}为最后一节
     ...    ELSE    课节大于7的所有曲目
 
 监测第一节课程
     wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+    ${title}=    get text    xpath=//android.widget.TextView[@resource-id=\"com.theonepiano.smartpiano:id/tv_album_name\"]
     click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
-    sleep    1
+    sleep    5
     wait until element is visible    xpath=//android.support.v4.widget.DrawerLayout/android.widget.FrameLayout[1]/android.view.View[1]    10
+    sleep    5
     press keycode    4
-    sleep    3
+    sleep    5
 
 监测课程章节
     #swipe    450    1350    450    800
@@ -328,7 +340,7 @@ Library           Common/Library/Exceledit.py
 
 小于4的所有曲谱
     [Arguments]    ${count}
-    :FOR    ${N}    IN RANGE    1    ${count}
+    : FOR    ${N}    IN RANGE    1    ${count}
     \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
     \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
     \    sleep    4
@@ -337,11 +349,11 @@ Library           Common/Library/Exceledit.py
     \    sleep    3
 
 大于4的所有曲谱
-    :FOR    ${N}    IN RANGE    1    5
+    : FOR    ${N}    IN RANGE    1    3
     \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
     \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
     \    sleep    1
-    \    监测课程章节
+    \    监测课程章节简版
     \    sleep    1
     \    press keycode    4
     \    sleep    2
@@ -361,7 +373,7 @@ Library           Common/Library/Exceledit.py
 
 小于4的所有游戏
     [Arguments]    ${count}
-    :FOR    ${N}    IN RANGE    1    ${count}
+    : FOR    ${N}    IN RANGE    1    ${count}
     \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
     \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
     \    sleep    1
@@ -371,7 +383,7 @@ Library           Common/Library/Exceledit.py
     \    sleep    3
 
 大于4的所有游戏
-    :FOR    ${N}    IN RANGE    1    5
+    : FOR    ${N}    IN RANGE    1    5
     \    遮挡处理    ${N}
     \    sleep    2
     \    wait until element is visible    id=android:id/content    20
@@ -388,6 +400,236 @@ Library           Common/Library/Exceledit.py
 遮挡处理
     [Arguments]    ${N}
     ${num}    evaluate    ${N}+${2}
-    ${static}=     run keyword and return status    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    ${static}=    run keyword and return status    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
     run keyword if    ${static}==False    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${num}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
     ...    ELSE    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
+
+遍历所有曲谱简版
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    前两个曲谱
+    剩下的所有曲谱简版
+
+视频监测简版
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
+    sleep    1
+    监测课程章节简版
+    sleep    1
+    press keycode    4
+    sleep    2
+
+监测课程章节简版
+    监测第一节课程
+    sleep    1
+
+剩下的所有曲谱简版
+    : FOR    ${N}    IN RANGE    3    5
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    \    sleep    2
+    \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
+    \    sleep    1
+    \    监测课程章节简版
+    \    sleep    1
+    \    press keycode    4
+    \    sleep    3
+    swipe    440    1046    440    610
+    剩下的所有曲谱简版
+
+进入曲集简版
+    [Arguments]    ${N}
+    sleep    2
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    sleep    2
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
+
+上移后简版
+    [Arguments]    ${N}
+    sleep    2
+    swipe    450    1050    450    1220
+    sleep    2
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
+
+前两个曲谱
+    : FOR    ${N}    IN RANGE    1    3
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    \    sleep    2
+    \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
+    \    sleep    1
+    \    监测课程章节简版
+    \    sleep    1
+    \    press keycode    4
+    \    sleep    3
+
+收藏第一节课程
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    sleep    5
+    wait until element is visible    xpath=//android.support.v4.widget.DrawerLayout/android.widget.FrameLayout[1]/android.view.View[1]    10
+    sleep    5
+    click a point    1302    53
+    press keycode    4
+    sleep    5
+
+清空我的收藏--曲集
+    ${static}=    get matching xpath count    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]
+    run keyword if    ${static}>0    取消第一条数据的收藏--曲集
+    page should contain text    暂无收藏    页面异常，无法找到“暂无收藏”
+
+取消第一条数据的收藏--曲集
+    #click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]
+    sleep    1
+    收藏第一节课程--曲集
+    清空我的收藏--曲集
+
+收藏第一节课程--曲集
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    sleep    5
+    wait until element is visible    id=com.theonepiano.smartpiano:id/iv_favorite    10
+    click element    id=com.theonepiano.smartpiano:id/iv_favorite
+    sleep    5
+    press keycode    4
+    sleep    5
+
+清空我的录音
+    ${static}=    get matching xpath count    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]
+    run keyword if    ${static}>0    取消第一条录音
+    #page should contain text    暂无录音    页面异常，无法找到“暂无录音”
+
+添加琴音录制
+    wait until element is visible    xpath=//android.support.v4.widget.DrawerLayout/android.widget.FrameLayout[1]/android.view.View[1]    10
+    sleep    5
+    click a point    1211    51
+    click a point    1213    136
+    sleep    2
+    click a point    1211    51
+    sleep    0.5
+    click a point    965    297
+    click a point    370    300
+    sleep    1
+
+添加弹唱录制
+    wait until element is visible    xpath=//android.support.v4.widget.DrawerLayout/android.widget.FrameLayout[1]/android.view.View[1]    10
+    sleep    5
+    click a point    1211    51
+    click a point    1213    192
+    sleep    2
+    click a point    1211    51
+    sleep    0.5
+    click a point    965    297
+    click a point    370    300
+    sleep    1
+
+遍历所有游戏简版
+    前两个游戏
+    剩下的所有游戏简版
+
+前两个游戏
+    : FOR    ${N}    IN RANGE    1    3
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    \    sleep    2
+    \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
+    \    sleep    3
+    \    wait until element is visible    xpath=//android.widget.EditText    10
+    \    press keycode    4
+    \    sleep    3
+
+剩下的所有游戏简版
+    : FOR    ${N}    IN RANGE    3    5
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    \    sleep    2
+    \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
+    \    sleep    3
+    \    wait until element is visible    xpath=//android.widget.EditText    10
+    \    press keycode    4
+    \    sleep    3
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[4]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
+    swipe    440    1046    440    610
+    剩下的所有游戏简版
+
+取消第一条录音
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]
+    sleep    1
+    long press    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]
+    sleep    0.5
+    click element    id=com.theonepiano.smartpiano:id/select_dialog_listview
+    清空我的录音
+
+遍历剩下的新手入门视频
+    ${title_old}=    get text    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[3]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    : FOR    ${N}    IN RANGE    2    4
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[${N}]    10
+    \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[${N}]
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]    10
+    \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]
+    \    wait until element is visible    id=com.theonepiano.smartpiano:id/exo_subtitles    10
+    \    sleep    3
+    \    press keycode    4
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]    10
+    \    press keycode    4
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[1]    10
+    swipe    450    1150    450    545
+    ${title_new}=    get text    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[3]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    run keyword if    '${title_old}'!='${title_new}'    遍历剩下的新手入门视频
+    ...    ELSE    遍历最后一个新手入门视频
+
+遍历第一个新手入门视频
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[1]    10
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[1]
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]    10
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]
+    wait until element is visible    id=com.theonepiano.smartpiano:id/exo_subtitles    10
+    sleep    3
+    press keycode    4
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]    10
+    press keycode    4
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[1]    10
+
+遍历所有新手入门教程
+    遍历第一个新手入门视频
+    遍历剩下的新手入门视频
+
+遍历最后一个新手入门视频
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[4]    10
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[4]
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]    10
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]
+    wait until element is visible    id=com.theonepiano.smartpiano:id/exo_subtitles    10
+    sleep    3
+    press keycode    4
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]    10
+    press keycode    4
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.FrameLayout[1]    10
+
+遍历所有单曲讲解教程
+    遍历第一个单曲讲解视频
+    遍历剩下的单曲讲解视频
+
+遍历第一个单曲讲解视频
+    wait until element is visible    //android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+    click element    //android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    wait until element is visible    id=com.theonepiano.smartpiano:id/exo_subtitles    10
+    sleep    3
+    press keycode    4
+    wait until element is visible    //android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+
+遍历剩下的单曲讲解视频
+    ${title_old}=    get text    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[7]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    :FOR    ${N}    IN RANGE    2    8
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+    \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    \    wait until element is visible    id=com.theonepiano.smartpiano:id/exo_subtitles    10
+    \    sleep    3
+    \    press keycode    4
+    \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+    swipe    450    1260    450    600
+    ${title_new}=    get text    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[7]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    run keyword if    '${title_old}'!='${title_new}'    遍历剩下的单曲讲解视频
+    ...    ELSE    遍历最后一个单曲讲解视频
+
+遍历最后一个单曲讲解视频
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[8]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[8]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    wait until element is visible    id=com.theonepiano.smartpiano:id/exo_subtitles    10
+    sleep    3
+    press keycode    4
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[8]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
