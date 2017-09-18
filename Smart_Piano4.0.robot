@@ -470,3 +470,48 @@ test
     sleep    20
     课节大于7的所有曲目
     [Teardown]    关闭程序
+
+智能钢琴-综合课堂资源监测
+    [Setup]    启动程序
+    wait until element is visible    name=教程
+    click element    name=教程
+    sleep    3
+    wait until element is visible    name=综合课堂
+    click element    name=综合课堂
+    遍历所有综合课堂
+    [Teardown]    关闭程序
+
+(手机)智能钢琴--个人中心--我的录音111
+    [Setup]    启动程序
+    wait until element is visible    name=我的
+    click element    name=我的
+    wait until element is visible    name=我的录音    5
+    click element    name=我的录音
+    清空我的录音
+    press keycode    4
+    sleep    2
+    click element    name=曲库
+    sleep    2
+    click a point    592    1108
+    sleep    3
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
+    ${name}=    get text    xpath=//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[2]/android.widget.FrameLayout[1]/android.view.View[1]/android.support.v7.widget.RecyclerView[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]
+    sleep    15
+    添加琴音录制(小米)
+    添加弹唱录制(小米)
+    press keycode    4
+    wait until element is visible    id=com.theonepiano.smartpiano:id/tv_toolbar_title
+    press keycode    4
+    wait until element is visible    name=我的
+    click element    name=我的
+    wait until element is visible    name=我的录音    5
+    click element    name=我的录音
+    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]
+    page should contain text    ${name}    10
+    sleep    1
+    Long Press    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[1]
+    sleep    1
+    click element    id=com.theonepiano.smartpiano:id/select_dialog_listview
+    page should contain text    ${name}    10
+    [Teardown]    关闭程序
