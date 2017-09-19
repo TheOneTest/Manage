@@ -420,7 +420,7 @@ Library           Common/Library/Exceledit.py
 
 监测课程章节简版
     监测第一节课程
-    课节大于7的所有曲目
+    #课节大于7的所有曲目
     sleep    1
 
 剩下的所有曲谱简版
@@ -636,7 +636,7 @@ Library           Common/Library/Exceledit.py
     wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[8]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
 
 遍历所有综合课堂
-    :FOR    ${N}    IN RANGE    1    5
+    : FOR    ${N}    IN RANGE    1    5
     \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]    10
     \    sleep    2
     \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.FrameLayout[1]/android.widget.ImageView[1]
@@ -647,7 +647,7 @@ Library           Common/Library/Exceledit.py
     \    sleep    3
 
 剩下的所有综合课堂曲目
-    :FOR    ${N}    IN RANGE    2    8
+    : FOR    ${N}    IN RANGE    2    8
     \    wait until element is visible    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]    10
     \    click element    xpath=//android.support.v7.widget.RecyclerView[@resource-id=\"com.theonepiano.smartpiano:id/rv_data_set\"]/android.widget.LinearLayout[${N}]/android.widget.LinearLayout[1]/android.widget.TextView[1]
     \    sleep    5

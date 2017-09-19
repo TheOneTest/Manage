@@ -430,7 +430,7 @@ Library           Common/Library/Exceledit.py
     [Setup]    启动程序
     wait until element is visible    name=曲集
     click element    name=曲集
-    sleep    3
+    sleep    20
     #监测课程章节
     遍历所有曲谱简版
     [Teardown]    关闭程序
