@@ -3,6 +3,7 @@ Library           Common/Library/MyLibrary.py
 Library           ExcelLibrary
 Library           Common/Library/Exceledit.py
 Library           Selenium2Library
+Library           HttpLibrary.HTTP
 
 *** Test Cases ***
 TEST1
@@ -80,6 +81,9 @@ JD 购物
     click element    xpath=.//*[@id='form-submit-btn']
     sleep    10
     [Teardown]    关闭
+
+Http 接口测试
+    create Http context
 
 *** Keywords ***
 关闭
