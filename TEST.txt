@@ -92,7 +92,8 @@ JD 购物
     [Teardown]    关闭
 
 Http 接口测试
-    create Http context
+    set request header    referer    https://passport.cnblogs.com/user/signin?ReturnUrl=http://i.cnblogs.com/
+    get    http://bj-trail.ntalker.com/trail/trail/userinfo.php?action=getregion&siteid=kf_9065&userid=kf_9065_ISME9754_guest609C7E04-1FBB-31&callback=trail_getregion_5A25409C
 
 *** Keywords ***
 关闭
