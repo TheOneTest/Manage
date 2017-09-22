@@ -72,14 +72,23 @@ JD 购物
     wait until element is visible    xpath=html/body/div[1]/header/nav/div/ul/li[1]/a/img
     page should contain    weipeng_yyp    10
     click element    xpath=.//*[@id='course-filter']/ul/li[2]/a    #选择软件测试分类
-    sleep    1
-    click element    xpath=.//*[@id='course-list-section']/div/div[3]/div/div[7]/div/div[1]/a/img    #选择课程
+    sleep    2
+    click element    xpath=.//*[@id='course-list-section']/div/div[3]/div/div[7]/div/div[2]/div[1]/a    #选择课程
     select window    title=Selenium+RobotFramework自动化测试实战班 - 博为峰网校 - IT在线培训平台|打造精品IT职业在线教育及实战平台 - Powered By EduSoho
     wait until element is visible    xpath=html/body/div[1]/div[3]/div/div[2]/div[2]/div[5]/a    10
+    ${price1}=    get text    xpath=//html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/span[2]/b
     click element    xpath=html/body/div[1]/div[3]/div/div[2]/div[2]/div[5]/a    #点击购买
     wait until element is visible    xpath=.//*[@id='form-submit-btn']
-    click element    xpath=.//*[@id='form-submit-btn']
+    ${price2}=    get text    xpath=.//*[@id='course-buy-form']/div[2]/div[2]/span/strong
+    run keyword if    ${price1}==${price2}    click element    xpath=.//*[@id='form-submit-btn']
+    ...    ELSE    click element    价格显示异常    #点击去支付
     sleep    10
+    ${price3}=    get text    xpath=.//*[@id='order-create-form']/div[1]/div/div[3]/span[2]
+    ${price4}=    get text    xpath=.//*[@id='order-create-form']/div[3]/div/span[2]
+    #价格校验
+    run keyword if    ${price1}==${price2}==${price3}==${price4}    click element    xpath=.//*[@id='js-order-create-sms-btn']
+    ...    ELSE    click element    价格校验失败
+    log    博为峰下单流程测试通过
     [Teardown]    关闭
 
 Http 接口测试
@@ -87,5 +96,5 @@ Http 接口测试
 
 *** Keywords ***
 关闭
-    close window
+    close browser
     kill driver    chromedriver.exe
