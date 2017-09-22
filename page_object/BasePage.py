@@ -1,9 +1,8 @@
 # _author_='Administrator'
 # -*- coding: utf-8 -*-
-
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from  selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException
 class BasePage(object):
 
     def __init__(self,selenium_driver,base_url,pagetitle):
@@ -21,6 +20,7 @@ class BasePage(object):
             self.driver.execute_script('window.stop()')
         finally:
             # self.driver.maximize_window()
+
             assert self.on_page(pagetitle),u"打开页面失败 %s"%url
 
     def open(self):

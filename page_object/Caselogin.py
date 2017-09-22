@@ -1,7 +1,7 @@
 # _author_='Administrator'
 # -*- coding: utf-8 -*-
 import unittest
-from LoginPage import LoginPage
+import LoginPage
 from selenium import webdriver
 import time
 
@@ -9,30 +9,29 @@ class Caselogin(unittest.TestCase):
 
     def setUp(self):
         self.driver = webdriver.Firefox()
-        self.driver.implicitly_wait= 3
-        self.driver.set_page_load_timeout= 3
-        self.url = "http://manage-dev.xiaoyezi.com/#!/pandect/dashboard"
-        self.username = "wenhaiyuan1"
-        self.password = "a123456"
+        # self.driver.implicitly_wait=3
+        # self.driver.set_page_load_timeout=5
+        self.url = "http://www.atstudy.com/"
+        self.username = "weipeng_yyp"
+        self.password = "wp890920"
 
-        # 后台登录
-        login_page = LoginPage(self.driver,self.url,u"Piano Classroom")
+
+
+
+    #用户登陆
+    def test_login_user(self):
+        login_page = LoginPage.LoginPage(self.driver,self.url,u"博为峰")
         login_page.open()
-        login_page.input_manage_username(self.username)
-        login_page.input_manage_passwd(self.password)
-        # time.sleep(3)
-        login_page.click_manage_login()
+        #点击首页登陆链接 进入登陆页面
+        login_page.click_element_login()
+        time.sleep(1)
+        login_page.input_username(self.username)    
+        login_page.input_password(self.password)
+        login_page.click_submit()
+        time.sleep(3)
 
-
-    def test_xinxiyulan(self):
-        return self.driver.find_element_by_xpath("//html/body/div/div[1]/nav/ul/li[1]/nav/ul/li[1]/a/span").click()
-    def test_youkelili(self):
-        return self.driver.find_element_by_xpath("//html/body/div/div[1]/nav/ul/li[1]/nav/ul/li[2]/a/span").click()
-
-
-
-
-
+    #购买课程
+           
 
 
     def tearDown(self):
