@@ -1,0 +1,34 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Resource          Shop_keywords.txt
+Library           Common/Library/ShopLibrary.py
+
+*** Test Cases ***
+商品下单
+    [Setup]    登录    13162085635    123456
+    click element    xpath=.//*[@id='mainNav']/div/ul/li[2]/a    #点击进入产品页面
+    sleep    2
+    select window    title=用户中心_The ONE德万智能钢琴-官方商城 郎朗投资 智能跟灯快速入门 - Powered by ECShop
+    wait until element is visible    xpath=html/body/div[6]/div[1]/div/a    15
+    ${count}=    get matching xpath count    xpath=html/body/div[6]/div
+    run keyword if    ${count}<6    click element    产品页商品数量不正确,目前数量为：${count}
+    ${N}=    evaluate    random.randint(1,4)    random,sys
+    ${win_curr}=    get current window handle
+    @{win_hds}=    get window handles
+    run keyword    click element    xpath=html/body/div[6]/div[${N}]/div/a
+    sleep    3
+    ${win_child}=    get 新窗口    @{win_hds}
+    select window by handle    ${win_child}
+    wait until element is visible    xpath=.//*[@id='ECS_SHOPPRICE']    15
+    ${shop_price}=    get text    xpath=.//*[@id='ECS_SHOPPRICE']    #获取详情页商品价格
+    ${shop_name}=    get text    xpath=.//*[@id='ECS_FORMBUY']/div    #获取详情页商品名称
+    click element    xpath=//a[text()='立即购买']    #点击立即购买，跳转到购物车页面
+    sleep    2
+    检测购物车中信息是否正确    ${shop_price}    ${shop_name}
+    click element    xpath=html/body/div[7]/div[1]/table/tbody/tr/td[2]/a/img    #点击去结算
+    检测结算页信息是否正确
+    取消购物订单
+    [Teardown]    关闭
+
+*** Keywords ***

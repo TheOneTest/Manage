@@ -1,0 +1,82 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Common/Library/ShopLibrary.py
+
+*** Keywords ***
+登录
+    [Arguments]    ${username}    ${password}
+    open browser    http://shop.1tai.com/    ff
+    maximize browser window
+    click element    xpath=html/body/div[2]/div/div[2]/div[1]/a
+    input text    xpath=html/body/div[4]/div/form/div/input[1]    13162085635
+    input text    xpath=html/body/div[4]/div/form/div/input[2]    123456
+    click element    xpath=html/body/div[4]/div/form/div/div[3]/input[4]
+    page should contain    登录成功
+    sleep    2
+
+关闭
+    close browser
+    kill driver    chromedriver.exe
+
+检测购物车中信息是否正确
+    [Arguments]    ${shop_proice}    ${shop_name}
+    wait until element is visible    xpath=.//*[@id='formCart']/table[1]/tbody/tr[2]/td[5]
+    ${proice}=    get text    xpath=.//*[@id='formCart']/table[1]/tbody/tr[2]/td[5]    #获取购物车中商品价格
+    ${name}=    get text    xpath=.//*[@id='formCart']/table[1]/tbody/tr[2]/td[1]/a[2]    #获取购物车中商品名称
+    sleep    1
+    inspect_Price    ${shop_name}    ${shop_proice}    ${name}    ${proice}
+
+Index Item From List
+    [Arguments]    ${element}    @{items}
+    ${index}=    set variable    ${0}
+    : FOR    ${item}    IN    @{items}
+    \    return from keyword if    '${element}'=='${item}'    ${index}
+    return from keyword    ${-1}
+
+get 新窗口
+    [Arguments]    @{win_all}
+    @{win_all_curr}    Get Window Handles
+    ${idx}=    set variable    ${-1}
+    : FOR    ${win}    IN    @{win_all_curr}
+    \    ${idx}    Index item from list    ${win}    @{win_all}
+    \    return from keyword if    ${idx}==${-1}    ${win}
+    \    comment    should be true    0==1
+    should be true    ${idx}    msg=No Window handles or no new handle
+
+select新窗口/原窗口
+    [Arguments]    ${keyword}    ${item}
+    ${win_curr}=    Get Current Window Handle
+    @{win_hds}=    Get window handles
+    Run keyword    ${keyword}    ${item}
+    sleep    3
+    ${win_child}=    get 新窗口    @{win_hds}
+    select window by handle    ${win_child}
+    [Return]    ${win_child}
+
+检测结算页信息是否正确
+    wait until element is visible    xpath=.//*[@id='theForm']/div[1]/table/tbody/tr[2]/td[5]    15
+    ${proice}=    get text    xpath=.//*[@id='theForm']/div[1]/table/tbody/tr[2]/td[5]
+    ${proice_all}=    get text    xpath=.//*[@id='ECS_ORDERTOTAL']/table/tbody/tr[3]/td/font
+    run keyword if    '${proice}'=='${proice_all}'    click element    xpath=.//*[@id='theForm']/div[9]/div[2]/input[1]
+    wait until element is visible    xpath=html/body/div[7]/div/table/tbody/tr[3]/td/div/input    15
+    ${win_curr}=    get current window handle
+    @{win_hds}=    get window handles
+    run keyword    click element    xpath=html/body/div[7]/div/table/tbody/tr[3]/td/div/input
+    sleep    3
+    ${win_child}=    get 新窗口    @{win_hds}
+    select window by handle    ${win_child}
+    wait until element is visible    xpath=.//*[@id='J_basePriceArea']/strong
+    ${price}=    substring_num    ${proice}
+    page should contain    ${price}
+    capture page screenshot
+    sleep    2
+
+取消购物订单
+    go to    http://shop.1tai.com/user.php?act=order_list
+    wait until element is visible    xpath=html/body/div[7]/div[2]/div/div/div/table/tbody/tr[1]/td[5]/font/a    15
+    click element    xpath=html/body/div[7]/div[2]/div/div/div/table/tbody/tr[1]/td[5]/font/a
+    sleep    2
+    ${mes}    confirm action
+    choose ok on next confirmation
+    sleep    3

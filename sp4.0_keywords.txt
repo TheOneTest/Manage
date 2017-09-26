@@ -420,7 +420,7 @@ Library           Common/Library/Exceledit.py
 
 监测课程章节简版
     监测第一节课程
-    #课节大于7的所有曲目
+    课节大于7的所有曲目
     sleep    1
 
 剩下的所有曲谱简版
