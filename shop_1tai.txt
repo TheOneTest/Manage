@@ -5,7 +5,7 @@ Resource          Shop_keywords.txt
 Library           Common/Library/ShopLibrary.py
 
 *** Test Cases ***
-商品下单
+PC商品下单
     [Setup]    登录    13162085635    123456
     click element    xpath=.//*[@id='mainNav']/div/ul/li[2]/a    #点击进入产品页面
     sleep    2
@@ -30,5 +30,13 @@ Library           Common/Library/ShopLibrary.py
     检测结算页信息是否正确
     取消购物订单
     [Teardown]    关闭
+
+H5商品下单
+    ${driver}=    open_h5    http://shop.1tai.com/h5
+    login_In    ${driver}    13162085635    123456
+    buy_item    ${driver}
+    del_item    ${driver}
+    ${a}=    get_text_h5    ${driver}
+    log    ${a}
 
 *** Keywords ***
