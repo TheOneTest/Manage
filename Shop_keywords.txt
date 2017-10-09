@@ -6,7 +6,7 @@ Library           Common/Library/ShopLibrary.py
 *** Keywords ***
 登录
     [Arguments]    ${username}    ${password}
-    open browser    http://shop.1tai.com/    ff
+    open browser    http://shop.1tai.com/    gg
     maximize browser window
     click element    xpath=html/body/div[2]/div/div[2]/div[1]/a
     input text    xpath=html/body/div[4]/div/form/div/input[1]    13162085635
