@@ -3,6 +3,7 @@
 
 __author__ = 'shouke'
 
+import urllib
 import urllib2
 import Cookie
 import json
@@ -49,9 +50,9 @@ class MyHttp:
         url = self.protocol + '://' + self.host + ':' + str(self.port)  + url + params
 
         logger.info('发起的请求为：%s' % url)
-        request = urllib.request.Request(url, headers=self.headers)
+        request = urllib2.Request(url, headers=self.headers)
         try:
-            response = urllib.request.urlopen(request)
+            response = urllib2.urlopen(request)
             response = response.read()
             return response
         except Exception as e:

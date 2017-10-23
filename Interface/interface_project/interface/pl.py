@@ -13,6 +13,7 @@ from globalpkg.globalpy import executed_history_id
 from httpprotocol import MyHttp
 from unittesttestcase import MyUnittestTestCase
 
+
 class Pl(MyUnittestTestCase):
    def setUp(self):
        pass
@@ -22,7 +23,7 @@ class Pl(MyUnittestTestCase):
        '''演示当某个测试步骤使用的接口所在host，port，和协议和当前套件、项目等统一配置信息不一致时的处理操作'''
 
        self.params = (self.params)[0]
-       self.params = urllib.parse.urlencode(self.params)
+       self.params = urllib.urlencode(self.params)
 
        myhttp = MyHttp('http', 'ditu.amap.com', '80')
 
