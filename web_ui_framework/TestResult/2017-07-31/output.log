@@ -1,0 +1,22 @@
+2017-07-31 15:03:10,960 - root - INFO - ********TEST START********
+2017-07-31 15:03:10,963 - root - ERROR - invalid literal for int() with base 10: 'ortE'
+2017-07-31 15:03:10,963 - root - INFO - *********TEST END*********
+2017-07-31 15:05:01,464 - root - INFO - ********TEST START********
+2017-07-31 15:05:01,467 - root - ERROR - invalid literal for int() with base 10: 'ortE'
+2017-07-31 15:05:01,467 - root - INFO - *********TEST END*********
+2017-07-31 15:09:27,881 - root - INFO - ********TEST START********
+2017-07-31 15:09:27,882 - root - ERROR - invalid literal for int() with base 10: 'ortE'
+2017-07-31 15:09:27,882 - root - INFO - *********TEST END*********
+2017-07-31 16:31:29,661 - root - INFO - ********TEST START********
+2017-07-31 16:31:29,674 - root - ERROR - invalid literal for int() with base 10: 'ortE'
+2017-07-31 16:31:29,674 - root - INFO - *********TEST END*********
+2017-07-31 16:34:11,424 - root - INFO - ********TEST START********
+2017-07-31 16:34:11,424 - root - INFO - *********TEST END*********
+2017-07-31 16:58:45,598 - root - INFO - ********TEST START********
+2017-07-31 16:58:45,599 - root - INFO - *********TEST END*********
+2017-07-31 17:05:28,357 - root - INFO - ********TEST START********
+2017-07-31 17:05:41,375 - root - INFO - *********TEST END*********
+2017-07-31 17:07:08,769 - root - INFO - ********TEST START********
+2017-07-31 17:07:16,691 - root - INFO - *********TEST END*********
+2017-07-31 17:07:35,290 - root - INFO - ********TEST START********
+2017-07-31 17:07:44,433 - root - INFO - *********TEST END*********
